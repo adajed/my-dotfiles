@@ -136,7 +136,9 @@ let g:syntastic_cpp_compiler = "g++"
 let g:syntastic_cpp_compiler_options = "-Wall -std=c++14"
 
 " Syntastic python settings
-let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_checkers = []
+let g:syntastic_python_pylint_exec = '/usr/bin/pylint3'
+let g:syntastic_python_pylint_args = '-E --extension-pkg-whitelist=numpy'
 
 
 " vim-airline
@@ -355,9 +357,9 @@ noremap <C-k> <C-W>k
 noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
-" Move between tabs
-noremap <C-]> :tabnext<cr>
-noremap <C-[> :tabprevious<cr>
+" Move between buffers
+noremap <C-]> :bn<cr>
+noremap <C-[> :bp<cr>
 
 " Useful mappings for managing tabs
 noremap <leader>tn :tabnew<cr>
