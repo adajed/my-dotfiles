@@ -111,6 +111,8 @@ Plugin 'fs111/pydoc.vim'
 Plugin 'neovimhaskell/haskell-vim'
 " typescript
 Plugin 'leafgarland/typescript-vim'
+" html
+Plugin 'mattn/emmet-vim'
 
 Plugin 'edkolev/tmuxline.vim'
 
@@ -157,25 +159,26 @@ let g:airline_mode_map = { '__' : '-', 'n'  : 'N',
             \ 's': 'S', 'S': 'S', '': 'S', }
 
 " NERDTress File highlighting
-function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+function! NERDTreeHighlightFile(extension, fg)
     exec 'augroup NERDTreeHighlight_' . a:extension
     exec 'autocmd!'
     exec 'autocmd FileType nerdtree highlight ' . a:extension .
-                \ ' ctermbg=' . a:bg .' ctermfg=' . a:fg .
-                \ ' guibg=' . a:guibg . ' guifg=' . a:guifg
+                \ ' ctermbg=none' .' ctermfg=' . a:fg .
+                \ ' guibg=none guifg=none'
     exec 'autocmd FileType nerdtree syn match ' . a:extension .
                 \ ' #^\s\+.*' . a:extension . '$#'
     exec 'augroup END'
 endfunction
 
 function! NERDTreeStartUp()
-    call NERDTreeHighlightFile('py', 'blue', 'none', 'none', 'none')
+    call NERDTreeHighlightFile('py', '32')
     " call NERDTreeHighlightFile('c', '11', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('h', '3', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('cc', '9', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('cpp', '9', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('sh', '2', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('js', 'orange', 'none', 'none', 'none')
+    call NERDTreeHighlightFile('h', '50')
+    call NERDTreeHighlightFile('cc', '50')
+    call NERDTreeHighlightFile('cpp', '50')
+    call NERDTreeHighlightFile('sh', '34')
+    call NERDTreeHighlightFile('js', '66')
+    call NERDTreeHighlightFile('ts', '172')
     if argc() == 0 && !exists("s:std_in")
         NERDTree
     endif
@@ -207,8 +210,8 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
 
 """" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-e>"
-let g:UltiSnipsJumpForwardTrigger = "<C-e>"
+let g:UltiSnipsExpandTrigger = "<C-s>"
+let g:UltiSnipsJumpForwardTrigger = "<C-s>"
 let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
 
 " sublime multicursor
@@ -226,6 +229,8 @@ let g:multi_cursor_exit_from_insert_mode = 0
 let g:multi_cursor_insert_maps = {'k':1, 'j':1}
 
 let g:NERDSpaceDelims = 1
+
+let g:user_emmet_leader_key='<C-e>'
 
 " }}}
 
