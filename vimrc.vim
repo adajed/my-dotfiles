@@ -94,16 +94,10 @@ Plugin 'ervandew/supertab'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-"""" Sublime multicursor
-Plugin 'terryma/vim-multiple-cursors'
-
 """" Snippets
 Plugin 'sirver/ultisnips'
 Plugin 'honza/vim-snippets'
 
-Plugin 'scrooloose/nerdcommenter'
-
-Plugin 'tpope/vim-unimpaired'
 
 Plugin 'fs111/pydoc.vim'
 
@@ -111,10 +105,14 @@ Plugin 'fs111/pydoc.vim'
 Plugin 'neovimhaskell/haskell-vim'
 " typescript
 Plugin 'leafgarland/typescript-vim'
-" html
-" Plugin 'mattn/emmet-vim'
 
-Plugin 'edkolev/tmuxline.vim'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-commentary'
+
+
+Plugin 'altercation/vim-colors-solarized'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -330,7 +328,9 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-colorscheme monokai
+let g:solarized_termcolors=256
+set background=dark
+colorscheme solarized
 
 " Set extra options when running in GUI mode
 if has("gui_running")
