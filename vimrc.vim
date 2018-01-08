@@ -148,8 +148,12 @@ let g:syntastic_tex_checkers = []
 let g:ycm_server_python_interpreter = 'python3'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_add_preview_to_completeopt = 1
-nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_entra_conf.py'
+
+" maps for useful ycm functions
+nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>yt :YcmCompleter GetType<CR>
+nnoremap <leader>yd :YcmCompleter GetDoc<CR>
 
 
 """"""""""""""""""""""""""""""""""""""""
