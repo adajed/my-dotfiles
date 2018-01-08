@@ -152,9 +152,9 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/
 
 " maps for useful ycm functions
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
+nnoremap <leader>G :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>yt :YcmCompleter GetType<CR>
 nnoremap <leader>yd :YcmCompleter GetDoc<CR>
-
 
 """"""""""""""""""""""""""""""""""""""""
 "           vim-airline                "
