@@ -420,6 +420,9 @@ noremap <C-k> <C-W>k
 noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
+" integrate deleting buffers with NERDTree
+nnoremap <leader>bd :bp<CR>:bd #<CR>
+
 " Useful mappings for managing tabs
 nnoremap <leader>tn :tabnew<cr>
 nnoremap <leader>to :tabonly<cr>
