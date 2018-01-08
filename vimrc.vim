@@ -112,7 +112,7 @@ Plugin 'neovimhaskell/haskell-vim'
 " typescript
 Plugin 'leafgarland/typescript-vim'
 " html
-Plugin 'mattn/emmet-vim'
+" Plugin 'mattn/emmet-vim'
 
 Plugin 'edkolev/tmuxline.vim'
 
@@ -122,7 +122,11 @@ filetype plugin indent on    " required
 " }}}
 
 " => Plugins setup {{{
-" Syntastic
+
+""""""""""""""""""""""""""""""""""""""""
+"               Syntastic              "
+""""""""""""""""""""""""""""""""""""""""
+" general
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
@@ -140,15 +144,19 @@ let g:Syntactic_python_flake8_args = '--select=E'
 let g:syntastic_latex_checkers = []
 let g:syntastic_tex_checkers = []
 
-" YouCompleteMe settings
+""""""""""""""""""""""""""""""""""""""""
+"           YouCompleteMe              "
+""""""""""""""""""""""""""""""""""""""""
 let g:ycm_server_python_interpreter = 'python3'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_add_preview_to_completeopt = 1
 nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_entra_conf.py'
 
-" vim-airline
-"
+
+""""""""""""""""""""""""""""""""""""""""
+"           vim-airline                "
+""""""""""""""""""""""""""""""""""""""""
 " let g:airline_left_sep = '▶'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -158,7 +166,10 @@ let g:airline_mode_map = { '__' : '-', 'n'  : 'N',
             \ 'v': 'V', 'V': 'V', '': 'V',
             \ 's': 'S', 'S': 'S', '': 'S', }
 
-" NERDTress File highlighting
+""""""""""""""""""""""""""""""""""""""""
+"               NERDTree               "
+""""""""""""""""""""""""""""""""""""""""
+" highlights files with given extension
 function! NERDTreeHighlightFile(extension, fg)
     exec 'augroup NERDTreeHighlight_' . a:extension
     exec 'autocmd!'
@@ -184,7 +195,7 @@ function! NERDTreeStartUp()
     endif
 endfunction
 
-augroup NERDTree
+augroup NERDTreeGroup
     autocmd!
 
     autocmd StdinReadPre * let s:std_in=1
@@ -193,7 +204,9 @@ augroup END
 
 let NERDTreeIgnore=['\.hi$', '\.pyc$', '\.o$']
 
-" vimhaskell
+""""""""""""""""""""""""""""""""""""""""
+"           vimhaskell                 "
+""""""""""""""""""""""""""""""""""""""""
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
@@ -203,18 +216,22 @@ let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 let g:haskell_indent_if = 3
 
-" ultisnips
-"""" make YCM compatible with UltiSnips (using supertab)
+
+""""""""""""""""""""""""""""""""""""""""
+"             UltiSnips                "
+""""""""""""""""""""""""""""""""""""""""
+" make YCM compatible with UltiSnips (using supertab)
 let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 let g:SuperTabDefaultCompletionType = '<C-n>'
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<c-e>"
+let g:UltiSnipsJumpForwardTrigger = "<c-e>"
+let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 
-"""" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<C-s>"
-let g:UltiSnipsJumpForwardTrigger = "<C-s>"
-let g:UltiSnipsJumpBackwardTrigger = "<C-b>"
-
-" sublime multicursor
+""""""""""""""""""""""""""""""""""""""""
+"       sublime multicursor            "
+""""""""""""""""""""""""""""""""""""""""
 " turn off defaults, so you can customize it
 let g:mutli_cursor_use_default_mapping = 0
 
@@ -229,8 +246,6 @@ let g:multi_cursor_exit_from_insert_mode = 0
 let g:multi_cursor_insert_maps = {'k':1, 'j':1}
 
 let g:NERDSpaceDelims = 1
-
-let g:user_emmet_leader_key='<C-e>'
 
 " }}}
 
