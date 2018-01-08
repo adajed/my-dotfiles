@@ -206,6 +206,8 @@ augroup END
 
 let NERDTreeIgnore=['\.hi$', '\.pyc$', '\.o$']
 
+nnoremap <leader>n :NERDTreeToggle<Cr>
+
 """"""""""""""""""""""""""""""""""""""""
 "           vimhaskell                 "
 """"""""""""""""""""""""""""""""""""""""
