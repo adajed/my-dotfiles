@@ -121,6 +121,7 @@ filetype plugin indent on    " required
 
 " => Plugins setup {{{
 
+" => Syntastic {{{
 """"""""""""""""""""""""""""""""""""""""
 "               Syntastic              "
 """"""""""""""""""""""""""""""""""""""""
@@ -141,7 +142,9 @@ let g:Syntactic_python_flake8_args = '--select=E'
 " Syntastic latex checkers
 let g:syntastic_latex_checkers = []
 let g:syntastic_tex_checkers = []
+" }}}
 
+" => YouCompleteMe {{{
 """"""""""""""""""""""""""""""""""""""""
 "           YouCompleteMe              "
 """"""""""""""""""""""""""""""""""""""""
@@ -154,12 +157,12 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>yt :YcmCompleter GetType<CR>
 nnoremap <leader>yd :YcmCompleter GetDoc<CR>
+" }}}
 
-
+" => vim-airline {{{
 """"""""""""""""""""""""""""""""""""""""
 "           vim-airline                "
 """"""""""""""""""""""""""""""""""""""""
-" let g:airline_left_sep = '▶'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
@@ -168,6 +171,10 @@ let g:airline_mode_map = { '__' : '-', 'n'  : 'N',
             \ 'v': 'V', 'V': 'V', '': 'V',
             \ 's': 'S', 'S': 'S', '': 'S', }
 
+let g:airline_theme='cool'
+" }}}
+
+" => NERDTree {{{
 """"""""""""""""""""""""""""""""""""""""
 "               NERDTree               "
 """"""""""""""""""""""""""""""""""""""""
@@ -207,7 +214,9 @@ augroup END
 let NERDTreeIgnore=['\.hi$', '\.pyc$', '\.o$']
 
 nnoremap <leader>n :NERDTreeToggle<Cr>
+" }}}
 
+" => vimhaskell {{{
 """"""""""""""""""""""""""""""""""""""""
 "           vimhaskell                 "
 """"""""""""""""""""""""""""""""""""""""
@@ -219,8 +228,9 @@ let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
 let g:haskell_indent_if = 3
+" }}}
 
-
+" => UltiSnips {{{
 """"""""""""""""""""""""""""""""""""""""
 "             UltiSnips                "
 """"""""""""""""""""""""""""""""""""""""
@@ -232,25 +242,7 @@ let g:SuperTabDefaultCompletionType = '<C-n>'
 let g:UltiSnipsExpandTrigger = "<c-e>"
 let g:UltiSnipsJumpForwardTrigger = "<c-e>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
-
-""""""""""""""""""""""""""""""""""""""""
-"       sublime multicursor            "
-""""""""""""""""""""""""""""""""""""""""
-" turn off defaults, so you can customize it
-let g:mutli_cursor_use_default_mapping = 0
-
-let g:multi_cursor_quit_key = '<C-c>'
-
-" exiting insert and visual mode will not delete cursors
-let g:multi_cursor_exit_from_visual_mode = 0
-let g:multi_cursor_exit_from_insert_mode = 0
-
-" this must be set for "kj" shortcut to work
-"   in multicursor
-let g:multi_cursor_insert_maps = {'k':1, 'j':1}
-
-let g:NERDSpaceDelims = 1
-
+" }}}
 " }}}
 
 " => VIM user interface {{{
