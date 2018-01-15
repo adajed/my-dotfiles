@@ -103,16 +103,16 @@ Plugin 'fs111/pydoc.vim'
 
 " haskell
 Plugin 'neovimhaskell/haskell-vim'
-" typescript
-Plugin 'leafgarland/typescript-vim'
 
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-commentary'
 
-
 Plugin 'altercation/vim-colors-solarized'
+
+" typescript
+Plugin 'leafgarland/typescript-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -198,8 +198,12 @@ function! NERDTreeStartUp()
     call NERDTreeHighlightFile('cc', '50')
     call NERDTreeHighlightFile('cpp', '50')
     call NERDTreeHighlightFile('sh', '34')
+
     call NERDTreeHighlightFile('js', '66')
     call NERDTreeHighlightFile('ts', '172')
+    call NERDTreeHighlightFile('html', '44')
+    call NERDTreeHighlightFile('css', '35')
+
     if argc() == 0 && !exists("s:std_in")
         NERDTree
     endif
@@ -244,6 +248,7 @@ let g:UltiSnipsExpandTrigger = "<c-e>"
 let g:UltiSnipsJumpForwardTrigger = "<c-e>"
 let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
 " }}}
+
 " }}}
 
 " => VIM user interface {{{
@@ -505,4 +510,15 @@ function! <SID>BufcloseCloseIt() abort
    endif
 endfunction
 
+function! s:CompleteTags()
+    " mapping for completing tags in html files
+    inoremap <buffer> > ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi
+    inoremap <buffer> >> ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi<CR><CR><Esc>ka<Tab>
+    inoremap <buffer> ><leader> >
+endfunction
+
+augroup HTMLGroup
+    autocmd!
+    autocmd BufRead,BufNewFile *.html call s:CompleteTags()
+augroup END
 " }}}
