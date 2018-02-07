@@ -142,6 +142,8 @@ let g:Syntactic_python_flake8_args = '--select=E'
 " Syntastic latex checkers
 let g:syntastic_latex_checkers = []
 let g:syntastic_tex_checkers = []
+
+let g:syntastic_typescript_checkers = ['tslint']
 " }}}
 
 " => YouCompleteMe {{{
@@ -151,7 +153,7 @@ let g:syntastic_tex_checkers = []
 let g:ycm_server_python_interpreter = 'python3'
 let g:ycm_autoclose_preview_window_after_insertion = 1
 let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/third_party/ycmd/cpp/ycm/.ycm_entra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/ycm_extra_conf.py'
 
 " maps for useful ycm functions
 nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
@@ -512,9 +514,8 @@ endfunction
 
 function! s:CompleteTags()
     " mapping for completing tags in html files
-    inoremap <buffer> > ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi
-    inoremap <buffer> >> ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi<CR><CR><Esc>ka<Tab>
-    inoremap <buffer> ><leader> >
+    inoremap <buffer> ><leader> ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi
+    inoremap <buffer> >><leader> ><Esc>%y/<[^> ]*/e<CR>:noh<CR>%pa><Esc>%a/<Esc>hi<CR><CR><Esc>ka<Tab>
 endfunction
 
 augroup HTMLGroup
