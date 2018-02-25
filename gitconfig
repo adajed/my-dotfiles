@@ -1,0 +1,46 @@
+[user]
+    name = Adam Jędrych
+    email = adam.jedrych25@gmail.com
+
+[core]
+    editor = vim
+    pager = less -r
+
+[color]
+    branch = auto
+    diff = auto
+    status = auto
+    ui = auto
+
+[color "branch"]
+    current = yellow reverse
+    local = yellow
+    remote = green
+
+[color "diff"]
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
+
+[color "status"]
+    added = yellow
+    changed = green
+    untracted = cyan
+
+[alias]
+    s = status -s -b
+
+    cb = checkout -b
+    b = branch
+    c = checkout
+    p = push
+    pu = pull --ff-only
+
+[push]
+    default = matching
+
+[merge]
+    defaultToUpstream = true
+    tool = vimdiff
+    confilctstyle = diff3
