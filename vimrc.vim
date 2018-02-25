@@ -394,6 +394,15 @@ set autoindent "Auto indent
 set wrap "Wrap lines
 " }}}
 
+" => Diff {{{
+nnoremap <leader>dg :diffget<CR>
+nnoremap <leader>dp :diffput<CR>
+nnoremap <leader>du :diffupdate<CR>
+
+nnoremap <leader>dml :diffget<Space>//2<CR>
+nnoremap <leader>dmu :diffget<Space>//3<CR>
+" }}}
+
 " => Visual mode related {{{
 function! CmdLine(str) abort
     exe "menu Foo.Bar :" . a:str
