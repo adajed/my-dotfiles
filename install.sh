@@ -10,7 +10,10 @@ if [ -d "$FOLDER/.git" ]; then
     ln -s ${FOLDER}/tmux.conf ~/.tmux.conf
 
     rm ~/.gitconfig
-        ln -s ${FOLDER}/gitconfig ~/.gitconfig
+    ln -s ${FOLDER}/gitconfig ~/.gitconfig
+
+    rm ~/.bash_aliases
+    ln -s ${FOLDER}/bash_aliases ~/.bash_aliases
 
     # create .vim dir if it doesn't exist
     if [ ! -d "~/.vim" ]; then
