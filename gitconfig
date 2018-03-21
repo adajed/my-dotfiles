@@ -29,13 +29,17 @@
     untracted = cyan
 
 [alias]
-    s = status -s -b
+    s = status -s
+    sb = status -s -b
 
     cb = checkout -b
     b = branch
     c = checkout
     p = push
     pu = pull --ff-only
+
+    lo = log --oneline
+    lg = log --graph --oneline
 
 [push]
     default = matching
