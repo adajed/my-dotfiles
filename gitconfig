@@ -29,7 +29,7 @@
     untracted = cyan
 
 [alias]
-    s = status -s
+    s = status
     sb = status -s -b
 
     cb = checkout -b
@@ -39,7 +39,7 @@
     pu = pull --ff-only
 
     lo = log --oneline
-    lg = log --graph --oneline
+    lg = log --oneline --graph
 
 [push]
     default = matching
@@ -48,3 +48,6 @@
     defaultToUpstream = true
     tool = vimdiff
     confilctstyle = diff3
+
+[credential]
+    helper = store

@@ -117,6 +117,9 @@ Plugin 'leafgarland/typescript-vim'
 " smooth scroll
 Plugin 'terryma/vim-smooth-scroll'
 
+" easymotion
+Plugin 'easymotion/vim-easymotion'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -266,6 +269,20 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " }}}
 
+" => vim-fugitive {{{
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gvdiff<CR>
+
+nnoremap <leader>dr :diffget<space>//3<CR>:diffupdate<CR>
+nnoremap <leader>dl :diffget<space>//2<CR>:diffupdate<CR>
+
+" diffs
+nnoremap <leader>dg :diffget<CR>
+nnoremap <leader>dp :diffput<CR>
+nnoremap <leader>du :diffupdate<CR>
+
+" }}}
+
 " }}}
 
 " => VIM user interface {{{
@@ -392,15 +409,6 @@ set textwidth=500
 
 set autoindent "Auto indent
 set wrap "Wrap lines
-" }}}
-
-" => Diff {{{
-nnoremap <leader>dg :diffget<CR>
-nnoremap <leader>dp :diffput<CR>
-nnoremap <leader>du :diffupdate<CR>
-
-nnoremap <leader>dml :diffget<Space>//2<CR>
-nnoremap <leader>dmu :diffget<Space>//3<CR>
 " }}}
 
 " => Visual mode related {{{
