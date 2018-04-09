@@ -472,6 +472,12 @@ nnoremap <leader>to :tabonly<cr>
 nnoremap <leader>tc :tabclose<cr>
 nnoremap <leader>tm :tabmove<cr>
 
+" resizing windows
+nnoremap <Up>       :resize -5<Cr>
+nnoremap <Down>     :resize +5<CR>
+nnoremap <Left>     :vertical resize +5<CR>
+nnoremap <Right>    :vertical resize -5<CR>
+
 " Let 'tl' toggle between this and the last accessed tab
 let g:lasttab = 1
 nnoremap <Leader>tl :exe "tabn ".g:lasttab<CR>
