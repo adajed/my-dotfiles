@@ -78,7 +78,7 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'valloric/youcompleteme'
 
 """" syntax check
-Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 
 " shell inside vim
 Plugin 'shougo/vimproc.vim'
@@ -126,31 +126,6 @@ filetype plugin indent on    " required
 " }}}
 
 " => Plugins setup {{{
-
-" => Syntastic {{{
-""""""""""""""""""""""""""""""""""""""""
-"               Syntastic              "
-""""""""""""""""""""""""""""""""""""""""
-" general
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
-" Syntactic cpp settings
-let g:syntastic_cpp_compiler = "g++"
-let g:syntastic_cpp_compiler_options = "-Wall -std=c++14"
-
-" Syntastic python settings
-let g:syntastic_python_checkers = ['flake8']
-let g:Syntactic_python_flake8_args = '--select=E'
-
-" Syntastic latex checkers
-let g:syntastic_latex_checkers = []
-let g:syntastic_tex_checkers = []
-
-let g:syntastic_typescript_checkers = ['tslint']
-" }}}
 
 " => YouCompleteMe {{{
 """"""""""""""""""""""""""""""""""""""""
@@ -283,6 +258,9 @@ nnoremap <leader>du :diffupdate<CR>
 
 " }}}
 
+" => CtrlP {{{
+let g:ctrlp_regexp = 1
+" }}}
 " }}}
 
 " => VIM user interface {{{
