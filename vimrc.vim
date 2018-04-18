@@ -75,14 +75,15 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 
 """" autocompletion
-Plugin 'valloric/youcompleteme'
-
+if has('nvim')
+    Plugin 'shougo/deoplete.nvim'
+    let g:deoplete#enable_at_startup = 1
+endif
 """" syntax check
 Plugin 'w0rp/ale'
 
 " shell inside vim
 Plugin 'shougo/vimproc.vim'
-Plugin 'shougo/vimshell.vim'
 
 """" fuzzy finder
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -98,7 +99,10 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'sirver/ultisnips'
 Plugin 'honza/vim-snippets'
 
-
+"""" Python
+if has('nvim')
+    Plugin 'zchee/deoplete-jedi'
+endif
 Plugin 'fs111/pydoc.vim'
 
 " haskell
@@ -127,20 +131,8 @@ filetype plugin indent on    " required
 
 " => Plugins setup {{{
 
-" => YouCompleteMe {{{
-""""""""""""""""""""""""""""""""""""""""
-"           YouCompleteMe              "
-""""""""""""""""""""""""""""""""""""""""
-let g:ycm_server_python_interpreter = 'python3'
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_add_preview_to_completeopt = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/youcompleteme/ycm_extra_conf.py'
-
-" maps for useful ycm functions
-nnoremap <leader>g :YcmCompleter GoToDefinition<CR>
-nnoremap <leader>G :YcmCompleter GoToDeclaration<CR>
-nnoremap <leader>yt :YcmCompleter GetType<CR>
-nnoremap <leader>yd :YcmCompleter GetDoc<CR>
+" => Python {{{
+let g:deoplete#sources#jedi#server_timeout = 30
 " }}}
 
 " => vim-airline {{{

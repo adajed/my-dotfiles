@@ -12,6 +12,9 @@ function safe_rm {
 
 USE_NVIM=0
 UPDATE_VIM_PLUGINS=1
+VIM="vim"
+VIM_COMMANDS="+PluginClean! +PluginUpdate +PluginInstall"
+
 while [[ $# -gt 0 ]]
 do
     key="$1"
@@ -32,6 +35,8 @@ do
 done
 
 if [[ $USE_NVIM -eq 1 ]]; then
+    VIM="nvim"
+    VIM_COMMANDS="$VIM_COMMANDS +UpdateRemotePlugins"
     if [ ! -d "$HOME/.config/nvim" ]; then
         mkdir $HOME/.config/nvim
     fi
@@ -80,8 +85,7 @@ if [ -d "$FOLDER/.git" ]; then
     if [[ $UPDATE_VIM_PLUGINS -eq 1 ]]; then
         # update and install all vim plugins
         echo "Installing vim plugins..."
-        vim +PluginClean! +PluginUpdate +PluginInstall +qall
-        python3 $HOME/.vim/bundle/youcompleteme/install.py --clang-completer
+        $VIM $VIM_COMMANDS +qall
     fi
 else
     echo "wrong directory :("
