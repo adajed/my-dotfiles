@@ -136,6 +136,7 @@ filetype plugin indent on    " required
 
 " => Python {{{
 let g:deoplete#sources#jedi#server_timeout = 30
+let g:deoplete#sources#jedi#python_path = "/usr/bin/python3.5"
 " }}}
 
 " => vim-airline {{{
