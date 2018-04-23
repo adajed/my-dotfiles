@@ -116,6 +116,9 @@ Plugin 'tpope/vim-commentary'
 Plugin 'altercation/vim-colors-solarized'
 
 " typescript
+if has('nvim')
+    Plugin 'mhartington/nvim-typescript'
+endif
 Plugin 'leafgarland/typescript-vim'
 
 " smooth scroll
