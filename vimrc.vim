@@ -432,6 +432,9 @@ vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
 " kj for switching to normal mode
 inoremap kj <Esc>
+if has('nvim')
+    tnoremap kj <C-\><C-n>
+endif
 "inoremap <Esc> <nop>
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
