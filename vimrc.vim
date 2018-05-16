@@ -366,6 +366,10 @@ set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
+
+set cursorline
+highlight CursorLine cterm=NONE ctermbg=17 ctermfg=white
+
 "}}}
 
 " => Files, backups and undo {{{
@@ -482,6 +486,14 @@ augroup BufRaadPostGroup
     autocmd!
     autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 augroup END
+" }}}
+
+" => Clipboard mappings {{{
+
+vnoremap <leader>y  "+y
+nnoremap <leader>Y  +yg_
+nnoremap <leader>y  "+y
+nnoremap <leader>yy "+yy
 " }}}
 
 " => Editing mappings {{{
