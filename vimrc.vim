@@ -127,6 +127,8 @@ Plugin 'terryma/vim-smooth-scroll'
 " easymotion
 Plugin 'easymotion/vim-easymotion'
 
+Plugin 'adimit/prolog.vim'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
