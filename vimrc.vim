@@ -370,7 +370,7 @@ set encoding=utf8
 set ffs=unix,dos,mac
 
 set cursorline
-highlight CursorLine cterm=NONE ctermbg=17 ctermfg=white
+highlight CursorLine cterm=NONE ctermbg=17
 
 "}}}
 

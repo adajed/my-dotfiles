@@ -36,6 +36,7 @@
     b = branch
     c = checkout
     p = push
+    po = push origin
     pu = pull --ff-only
 
     lo = log --oneline
