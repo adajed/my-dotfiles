@@ -263,7 +263,7 @@ nnoremap <leader>du :diffupdate<CR>
 " }}}
 
 " => CtrlP {{{
-let g:ctrlp_regexp = 1
+" let g:ctrlp_regexp = 1
 " }}}
 
 " }}}
@@ -469,6 +469,8 @@ nnoremap <Right>    :vertical resize -5<CR>
 let g:lasttab = 1
 nnoremap <Leader>tl :exe "tabn ".g:lasttab<CR>
 autocmd TabLeave * let g:lasttab = tabpagenr()
+
+autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
