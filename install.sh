@@ -20,7 +20,7 @@ create_dir() {
 USE_NVIM=0
 UPDATE_PLUGINS=1
 VIM="vim"
-VIM_COMMANDS="+PluginClean! +PluginUpdate +PluginInstall"
+VIM_COMMANDS="+PlugClean! +PlugUpdate"
 
 while [[ $# -gt 0 ]]
 do
@@ -28,6 +28,8 @@ do
     case $key in
         -h)
             echo "Usage: $0 [--nvim] [--noupdate]"
+            echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
+            echo -e "--noupdate - don't update vim/nvim plugins"
             exit 0
         ;;
         --nvim)
@@ -47,11 +49,18 @@ done
 
 if [[ $USE_NVIM -eq 1 ]]; then
     VIM="nvim"
-    VIM_COMMANDS="$VIM_COMMANDS +UpdateRemotePlugins"
-    if [ ! -d "$HOME/.config/nvim" ]; then
-        mkdir $HOME/.config/nvim
-    fi
+    create_dir $HOME/.config/nvim
 fi
+
+install_vim_plug() {
+    VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    if [[ ${USE_NVIM} -eq 1 ]]; then
+        VIM_PLUG_PATH="$HOME/.local/share/nvim/site/autoload/plug.vim"
+    else
+        VIM_PLUG_PATH="$HOME/.vim/autoload/plug.vim"
+    fi
+    curl -fLo ${VIM_PLUG_PATH} --create-dirs ${VIM_PLUG_URL}
+}
 
 tmuxplugins() {
     _update=$1
@@ -60,7 +69,9 @@ tmuxplugins() {
     create_dir ${HOME}/.tmux
     create_dir ${HOME}/.tmux/plugins
 
-    git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
+    if [ ! -d "${HOME}/.tmux/plugins" ]; then
+        git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
+    fi
 
     if [[ ${_update} -eq 1 ]]; then
         ${HOME}/.tmux/plugins/tpm/scripts/clean_plugins.sh
@@ -101,21 +112,20 @@ if [ -d "$FOLDER/.git" ]; then
     fi
 
     # download vundle if it doesn't exist
-    vundle_dir="$HOME/.vim/bundle/Vundle.vim"
-    if [ ! -d "${vundle_dir}" ]; then
-        echo "Cloning Vundle..."
-        git clone https://github.com/VundleVim/Vundle.vim.git ${vundle_dir}
+    if [ ! -f "${VIM_PLUG_PATH}" ]; then
+        echo "Downloading vim-plug..."
+        install_vim_plug
     else
-        echo "Vundle is already installed"
+        echo "vim-plug is already installed"
     fi
 
     if [[ $UPDATE_PLUGINS -eq 1 ]]; then
         # update and install all vim plugins
         echo "Installing vim plugins..."
         $VIM $VIM_COMMANDS +qall
+        tmuxplugins $UPDATE_PLUGINS
     fi
 
-    tmuxplugins $UPDATE_PLUGINS
 else
     echo "wrong directory :("
 fi

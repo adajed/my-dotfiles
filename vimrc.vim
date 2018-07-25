@@ -24,11 +24,6 @@
 " Sets how many lines of history VIM has to remember
 set history=500
 
-syntax on
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
-
 " Set to auto read when a file is changed from the outside
 set autoread
 
@@ -54,85 +49,102 @@ set foldmethod=marker
 
 " }}}
 
-" => Vundle {{{
-filetype off                  " required
+" => vim-plug {{{
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+if has('nvim')
+    Plug 'Shougo/denite.nvim'
+    " autocompletion
+    Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'zchee/deoplete-jedi'
+    " Plug 'mhartington/nvim-typescript'
+    let g:deoplete#enable_at_startup = 1
+endif
 
 """" NERDTree
 " NERDTree, file system explorer
-Plugin 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " support git in NERDTree
-Plugin 'xuyuanp/nerdtree-git-plugin'
+Plug 'xuyuanp/nerdtree-git-plugin'
 
 """" git
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 
-"""" autocompletion
-if has('nvim')
-    Plugin 'shougo/deoplete.nvim'
-    let g:deoplete#enable_at_startup = 1
-endif
 """" syntax check
-Plugin 'w0rp/ale'
+Plug 'w0rp/ale'
 
 " shell inside vim
-Plugin 'shougo/vimproc.vim'
+Plug 'shougo/vimproc.vim'
 
 """" fuzzy finder
-Plugin 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
 
 """" supertab
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 
 """" vim-airline
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 """" Snippets
-Plugin 'sirver/ultisnips'
-Plugin 'honza/vim-snippets'
+Plug 'sirver/ultisnips'
+Plug 'honza/vim-snippets'
 
-"""" Python
-if has('nvim')
-    Plugin 'zchee/deoplete-jedi'
-endif
-Plugin 'fs111/pydoc.vim'
+Plug 'fs111/pydoc.vim'
 
 " haskell
-Plugin 'neovimhaskell/haskell-vim'
+Plug 'neovimhaskell/haskell-vim'
 
-Plugin 'tpope/vim-unimpaired'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-commentary'
 
-Plugin 'altercation/vim-colors-solarized'
-
-" typescript
-if has('nvim')
-    Plugin 'mhartington/nvim-typescript'
-endif
-Plugin 'leafgarland/typescript-vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'leafgarland/typescript-vim'
 
 " smooth scroll
-Plugin 'terryma/vim-smooth-scroll'
+Plug 'terryma/vim-smooth-scroll'
 
-" easymotion
-Plugin 'easymotion/vim-easymotion'
+Plug 'morhetz/gruvbox'
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call plug#end()
 " }}}
 
 " => Plugins setup {{{
+
+" => denite {{{
+if has('nvim')
+    call denite#custom#option('default', {
+        \ 'prompt': '❯'
+        \ })
+
+    call denite#custom#var('file_rec', 'command',
+        \ ['rg', '--files', '--glob', '!.git', ''])
+    call denite#custom#var('grep', 'command', ['rg'])
+    call denite#custom#var('grep', 'default_opts',
+        \ ['--hidden', '--vimgrep', '--no-heading', '-S'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'final_opts', [])
+    call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
+        \'noremap')
+    call denite#custom#map('normal', '<Esc>', '<NOP>',
+        \'noremap')
+    call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
+        \'noremap')
+    call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
+        \'noremap')
+    call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
+        \'noremap')
+
+    nnoremap <C-p> :<C-u>Denite file_rec<CR>
+
+endif
+" }}}
 
 " => Python {{{
 let g:deoplete#sources#jedi#server_timeout = 30
@@ -341,6 +353,7 @@ match ErrorMsg '\s\+$'
 " }}}
 
 " => Colors and Fonts {{{
+set termguicolors
 " Enable syntax highlighting
 syntax enable
 
@@ -351,7 +364,7 @@ endif
 
 let g:solarized_termcolors=256
 set background=dark
-colorscheme solarized
+colorscheme gruvbox
 
 " Set extra options when running in GUI mode
 if has("gui_running")
@@ -491,11 +504,7 @@ augroup END
 " }}}
 
 " => Clipboard mappings {{{
-
-vnoremap <leader>y  "+y
-nnoremap <leader>Y  +yg_
-nnoremap <leader>y  "+y
-nnoremap <leader>yy "+yy
+set clipboard=unnamedplus
 " }}}
 
 " => Editing mappings {{{
