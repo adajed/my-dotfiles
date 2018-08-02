@@ -1,6 +1,15 @@
 #!/bin/bash
 
+# directory of this repo
 FOLDER=$(pwd)
+# set to 1 use neovim instead of vim
+USE_NVIM=0
+# whether to update vim/neovim and tmux plugins
+UPDATE_PLUGINS=1
+# "vim" for vim and "nvim" for neovim
+VIM="vim"
+# vim commands to update plugins
+VIM_COMMANDS="+PlugClean! +PlugUpdate"
 
 # check if file exists before removing it
 safe_rm() {
@@ -10,6 +19,7 @@ safe_rm() {
     fi
 }
 
+# check if file directory exists and if not create it
 create_dir() {
     _path=$1
     if [ ! -d "${_path}" ]; then
@@ -17,10 +27,6 @@ create_dir() {
     fi
 }
 
-USE_NVIM=0
-UPDATE_PLUGINS=1
-VIM="vim"
-VIM_COMMANDS="+PlugClean! +PlugUpdate"
 
 while [[ $# -gt 0 ]]
 do
@@ -46,11 +52,6 @@ do
         ;;
     esac
 done
-
-if [[ $USE_NVIM -eq 1 ]]; then
-    VIM="nvim"
-    create_dir $HOME/.config/nvim
-fi
 
 install_vim_plug() {
     VIM_PLUG_URL="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
@@ -82,9 +83,10 @@ tmuxplugins() {
 
 if [ -d "$FOLDER/.git" ]; then
     echo "Copying vimrc"
-    safe_rm $HOME/.vimrc
-    ln -s ${FOLDER}/vimrc.vim $HOME/.vimrc
-    if [[ $USE_NVIM -eq 1 ]]; then
+    if [[ $USE_NVIM -eq 0 ]]; then
+        safe_rm $HOME/.vimrc
+        ln -s ${FOLDER}/vimrc.vim $HOME/.vimrc
+    else
         safe_rm $HOME/.config/nvim/init.vim
         ln -s ${FOLDER}/vimrc.vim $HOME/.config/nvim/init.vim
     fi
@@ -99,25 +101,7 @@ if [ -d "$FOLDER/.git" ]; then
 
     echo "Copying bash_aliases"
     safe_rm $HOME/.bash_aliases
-    # using copy here because links don't work
     ln -s ${FOLDER}/bash_aliases $HOME/.bash_aliases
-
-    # create .vim dir if it doesn't exist
-    if [ ! -d "$HOME/.vim" ]; then
-        mkdir $HOME/.vim
-    fi
-    # create .vim/bundle if it doesn't exist
-    if [ ! -d "$HOME/.vim/bundle" ]; then
-        mkdir $HOME/.vim/bundle
-    fi
-
-    # download vundle if it doesn't exist
-    if [ ! -f "${VIM_PLUG_PATH}" ]; then
-        echo "Downloading vim-plug..."
-        install_vim_plug
-    else
-        echo "vim-plug is already installed"
-    fi
 
     if [[ $UPDATE_PLUGINS -eq 1 ]]; then
         # update and install all vim plugins
