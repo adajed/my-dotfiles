@@ -121,27 +121,28 @@ if has('nvim')
         \ 'prompt': '❯'
         \ })
 
-    call denite#custom#var('file_rec', 'command',
-        \ ['rg', '--files', '--glob', '!.git', ''])
-    call denite#custom#var('grep', 'command', ['rg'])
-    call denite#custom#var('grep', 'default_opts',
-        \ ['--hidden', '--vimgrep', '--no-heading', '-S'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'final_opts', [])
-    call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
-        \'noremap')
-    call denite#custom#map('normal', '<Esc>', '<NOP>',
-        \'noremap')
-    call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
-        \'noremap')
-    call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
-        \'noremap')
-    call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
-        \'noremap')
+    " call denite#custom#var('file_rec', 'command',
+    "     \ ['rg', '--files', '--glob', '!.git', ''])
+    " call denite#custom#var('grep', 'command', ['rg'])
+    " call denite#custom#var('grep', 'default_opts',
+    "     \ ['--hidden', '--vimgrep', '--no-heading', '-S'])
+    " call denite#custom#var('grep', 'recursive_opts', [])
+    " call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+    " call denite#custom#var('grep', 'separator', ['--'])
+    " call denite#custom#var('grep', 'final_opts', [])
+    " call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
+    "     \'noremap')
+    " call denite#custom#map('normal', '<Esc>', '<NOP>',
+    "     \'noremap')
+    " call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
+    "     \'noremap')
+    " call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
+    "     \'noremap')
+    " call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
+    "     \'noremap')
 
-    nnoremap <C-p> :<C-u>Denite file_rec<CR>
+    nnoremap <C-p> :<C-u>Denite file/rec<CR>
+    nnoremap <leader>bb :<C-u>Denite buffer<CR>
 
 endif
 " }}}
