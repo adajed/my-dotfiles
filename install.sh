@@ -32,7 +32,7 @@ while [[ $# -gt 0 ]]
 do
     key="$1"
     case $key in
-        -h)
+        -h|--help)
             echo "Usage: $0 [--nvim] [--noupdate]"
             echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
             echo -e "--noupdate - don't update vim/nvim plugins"
@@ -41,6 +41,7 @@ do
         ;;
         --nvim)
             USE_NVIM=1
+            VIM="nvim"
             shift
         ;;
         --noupdate)
@@ -65,17 +66,19 @@ install_vim_plug() {
     else
         VIM_PLUG_PATH="$HOME/.vim/autoload/plug.vim"
     fi
-    curl -fLo ${VIM_PLUG_PATH} --create-dirs ${VIM_PLUG_URL}
+
+    if [ ! -f "${VIM_PLUG_PATH}" ] || [ ${UPDATE_PLUGINS} -eq 1 ]; then
+        echo "Installing vim-plug"
+        curl -fLo ${VIM_PLUG_PATH} --create-dirs ${VIM_PLUG_URL}
+    fi
 }
 
 tmuxplugins() {
     _update=$1
     echo "Installing tmux plugins..."
 
-    create_dir ${HOME}/.tmux
-    create_dir ${HOME}/.tmux/plugins
-
-    if [ ! -d "${HOME}/.tmux/plugins" ]; then
+    mkdir -p ${HOME}/.tmux/plugins
+    if [ -d "${HOME}/.tmux/plugins" ]; then
         git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
     fi
 
@@ -86,6 +89,22 @@ tmuxplugins() {
     fi
 }
 
+check_if_command_exists() {
+    _command=$1
+    hash ${_command} 2>/dev/null || { echo >&2 "${_command} is required, but it's not installed. Please install it first."; exit 1; }
+}
+
+# check requirements
+REQUIRED_COMMANDS=(git vim curl)
+for _command in ${REQUIRED_COMMANDS[*]}; do
+    check_if_command_exists ${_command}
+done
+
+# if installing for neovim check whether it is installed
+if [[ $USE_NVIM -eq 1 ]]; then
+    check_if_command_exists nvim
+fi
+
 if [ -d "$FOLDER/.git" ]; then
     echo "Copying vimrc"
     if [[ $USE_NVIM -eq 0 ]]; then
@@ -93,6 +112,7 @@ if [ -d "$FOLDER/.git" ]; then
         ln -s ${FOLDER}/vimrc.vim $HOME/.vimrc
     else
         safe_rm $HOME/.config/nvim/init.vim
+        mkdir -p $HOME/.config/nvim
         ln -s ${FOLDER}/vimrc.vim $HOME/.config/nvim/init.vim
     fi
 
@@ -107,6 +127,9 @@ if [ -d "$FOLDER/.git" ]; then
     echo "Copying bash_aliases"
     safe_rm $HOME/.bash_aliases
     ln -s ${FOLDER}/bash_aliases $HOME/.bash_aliases
+
+    # install vim plugin manager
+    install_vim_plug
 
     if [[ $UPDATE_PLUGINS -eq 1 ]]; then
         # update and install all vim plugins
