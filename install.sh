@@ -8,8 +8,8 @@ USE_NVIM=0
 UPDATE_PLUGINS=1
 # "vim" for vim and "nvim" for neovim
 VIM="vim"
-# vim commands to update plugins
-VIM_COMMANDS="+PlugClean! +PlugUpdate"
+# set to 1 to install zsh
+USE_ZSH=0
 
 # check if file exists before removing it
 safe_rm() {
@@ -36,6 +36,7 @@ do
             echo "Usage: $0 [--nvim] [--noupdate]"
             echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
             echo -e "--noupdate - don't update vim/nvim plugins"
+            echo -e "--zsh      - install zsh"
             exit 0
         ;;
         --nvim)
@@ -44,6 +45,10 @@ do
         ;;
         --noupdate)
             UPDATE_PLUGINS=0
+            shift
+        ;;
+        --zsh)
+            USE_ZSH=1
             shift
         ;;
         *)
@@ -106,8 +111,12 @@ if [ -d "$FOLDER/.git" ]; then
     if [[ $UPDATE_PLUGINS -eq 1 ]]; then
         # update and install all vim plugins
         echo "Installing vim plugins..."
-        $VIM $VIM_COMMANDS +qall
+        $VIM +PlugClean! +PlugUpdate +qall
         tmuxplugins $UPDATE_PLUGINS
+    fi
+
+    if [[ $USE_ZSH -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_zsh.sh
     fi
 
 else
