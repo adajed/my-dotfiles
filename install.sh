@@ -77,12 +77,16 @@ tmuxplugins() {
     _update=$1
     echo "Installing tmux plugins..."
 
-    mkdir -p ${HOME}/.tmux/plugins
-    if [ -d "${HOME}/.tmux/plugins" ]; then
+    create_dir ${HOME}/.tmux/plugins
+    if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
         git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
     fi
 
     if [[ ${_update} -eq 1 ]]; then
+        cd ${HOME}/.tmux/plugins/tpm
+        git pull
+        cd ${FOLDER}
+
         ${HOME}/.tmux/plugins/tpm/scripts/clean_plugins.sh
         ${HOME}/.tmux/plugins/tpm/scripts/update_plugin.sh
         ${HOME}/.tmux/plugins/tpm/scripts/install_plugins.sh
