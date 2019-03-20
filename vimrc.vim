@@ -56,8 +56,11 @@ if has('nvim')
     Plug 'Shougo/denite.nvim'
     " autocompletion
     Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'zchee/deoplete-jedi'
-    " Plug 'mhartington/nvim-typescript'
+
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch' : 'next',
+        \ 'do' : 'bash install.sh',
+        \ }
     let g:deoplete#enable_at_startup = 1
 endif
 
@@ -72,29 +75,23 @@ Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
 """" syntax check
-Plug 'w0rp/ale'
-
-" shell inside vim
-Plug 'shougo/vimproc.vim'
-
-"""" fuzzy finder
-" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'w0rp/ale'
 
 """" supertab
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 
 """" vim-airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 """" Snippets
-Plug 'sirver/ultisnips'
-Plug 'honza/vim-snippets'
+" Plug 'sirver/ultisnips'
+" Plug 'honza/vim-snippets'
 
-Plug 'fs111/pydoc.vim'
+" Plug 'fs111/pydoc.vim'
 
 " haskell
-Plug 'neovimhaskell/haskell-vim'
+" Plug 'neovimhaskell/haskell-vim'
 
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
@@ -102,7 +99,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'leafgarland/typescript-vim'
+" Plug 'leafgarland/typescript-vim'
 
 " smooth scroll
 Plug 'terryma/vim-smooth-scroll'
@@ -120,26 +117,6 @@ if has('nvim')
     call denite#custom#option('default', {
         \ 'prompt': '❯'
         \ })
-
-    " call denite#custom#var('file_rec', 'command',
-    "     \ ['rg', '--files', '--glob', '!.git', ''])
-    " call denite#custom#var('grep', 'command', ['rg'])
-    " call denite#custom#var('grep', 'default_opts',
-    "     \ ['--hidden', '--vimgrep', '--no-heading', '-S'])
-    " call denite#custom#var('grep', 'recursive_opts', [])
-    " call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-    " call denite#custom#var('grep', 'separator', ['--'])
-    " call denite#custom#var('grep', 'final_opts', [])
-    " call denite#custom#map('insert', '<Esc>', '<denite:enter_mode:normal>',
-    "     \'noremap')
-    " call denite#custom#map('normal', '<Esc>', '<NOP>',
-    "     \'noremap')
-    " call denite#custom#map('insert', '<C-v>', '<denite:do_action:vsplit>',
-    "     \'noremap')
-    " call denite#custom#map('normal', '<C-v>', '<denite:do_action:vsplit>',
-    "     \'noremap')
-    " call denite#custom#map('normal', 'dw', '<denite:delete_word_after_caret>',
-    "     \'noremap')
 
     nnoremap <C-p> :<C-u>Denite file/rec<CR>
     nnoremap <leader>bb :<C-u>Denite buffer<CR>
@@ -278,6 +255,24 @@ nnoremap <leader>du :diffupdate<CR>
 " => CtrlP {{{
 " let g:ctrlp_regexp = 1
 " }}}
+
+" }}}
+
+" => Language Server Protocol {{{
+
+set completeopt=longest,menuone
+
+let g:LanguageClient_serverCommands = {
+    \ 'python' : ['/usr/local/bin/pyls'],
+    \ 'sh' : ['bash-language-server', 'start'],
+    \ 'cpp' : ['/usr/bin/clangd-7'],
+    \ }
+
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> rr :call LanguageClient#textDocument_rename()<CR>
 
 " }}}
 
