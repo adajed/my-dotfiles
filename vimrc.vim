@@ -77,6 +77,9 @@ Plug 'airblade/vim-gitgutter'
 """" syntax check
 " Plug 'w0rp/ale'
 
+"""" Auto omnicompletion
+Plug 'BrandonRoehl/auto-omni'
+
 """" supertab
 " Plug 'ervandew/supertab'
 
