@@ -10,6 +10,8 @@ UPDATE_PLUGINS=1
 VIM="vim"
 # set to 1 to install zsh
 USE_ZSH=0
+#set to 1 to install lsp features
+LSP=0
 
 # check if file exists before removing it
 safe_rm() {
@@ -37,6 +39,7 @@ do
             echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
             echo -e "--noupdate - don't update vim/nvim plugins"
             echo -e "--zsh      - install zsh"
+            echo -e "--lsp      - install language servers"
             exit 0
         ;;
         --nvim)
@@ -50,6 +53,10 @@ do
         ;;
         --zsh)
             USE_ZSH=1
+            shift
+        ;;
+    --lsp)
+            LSP=1
             shift
         ;;
         *)
@@ -144,6 +151,10 @@ if [ -d "$FOLDER/.git" ]; then
 
     if [[ $USE_ZSH -eq 1 ]]; then
         . ${FOLDER}/scripts/setup_zsh.sh
+    fi
+
+    if [[ $LSP -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_lsp.sh
     fi
 
 else
