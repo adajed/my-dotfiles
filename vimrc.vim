@@ -62,6 +62,8 @@ if has('nvim')
         \ 'do' : 'bash install.sh',
         \ }
     let g:deoplete#enable_at_startup = 1
+
+    Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 endif
 
 """" NERDTree
@@ -74,11 +76,8 @@ Plug 'xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 
-"""" syntax check
-" Plug 'w0rp/ale'
-
 """" Auto omnicompletion
-Plug 'BrandonRoehl/auto-omni'
+" Plug 'BrandonRoehl/auto-omni'
 
 """" supertab
 " Plug 'ervandew/supertab'
@@ -87,22 +86,12 @@ Plug 'BrandonRoehl/auto-omni'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-"""" Snippets
-" Plug 'sirver/ultisnips'
-" Plug 'honza/vim-snippets'
-
-" Plug 'fs111/pydoc.vim'
-
-" haskell
-" Plug 'neovimhaskell/haskell-vim'
-
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 
 Plug 'altercation/vim-colors-solarized'
-" Plug 'leafgarland/typescript-vim'
 
 " smooth scroll
 Plug 'terryma/vim-smooth-scroll'
@@ -193,42 +182,6 @@ let NERDTreeIgnore=['\.hi$', '\.pyc$', '\.o$']
 nnoremap <leader>n :NERDTreeToggle<Cr>
 " }}}
 
-" => vimhaskell {{{
-""""""""""""""""""""""""""""""""""""""""
-"           vimhaskell                 "
-""""""""""""""""""""""""""""""""""""""""
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
-
-let g:haskell_indent_if = 2
-let g:haskell_indent_case = 2
-let g:haskell_indent_let = 4
-let g:haskell_indent_in = 1
-let g:haskell_indent_where = 6
-let g:haskell_indent_before_where = 2
-let g:haskell_indent_do = 3
-let g:haskell_indent_guard = 2
-" }}}
-
-" => UltiSnips {{{
-""""""""""""""""""""""""""""""""""""""""
-"             UltiSnips                "
-""""""""""""""""""""""""""""""""""""""""
-" make YCM compatible with UltiSnips (using supertab)
-let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:SuperTabDefaultCompletionType = '<C-n>'
-" better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger = "<c-e>"
-let g:UltiSnipsJumpForwardTrigger = "<c-e>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-z>"
-" }}}
-
 " => Smooth Scroll {{{
 """"""""""""""""""""""""""""""""""""""""
 "           vim-smooth-scroll          "
@@ -253,10 +206,6 @@ nnoremap <leader>dg :diffget<CR>
 nnoremap <leader>dp :diffput<CR>
 nnoremap <leader>du :diffupdate<CR>
 
-" }}}
-
-" => CtrlP {{{
-" let g:ctrlp_regexp = 1
 " }}}
 
 " }}}
