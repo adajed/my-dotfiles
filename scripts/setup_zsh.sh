@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 
 echo -e "Downloading zsh..."
-sudo apt install zsh
+apt install zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo -e "Downloading oh-my-zsh..."
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
@@ -32,6 +32,7 @@ if [ "${current_shell}" != "${zsh_shell}" ]; then
     done
 
     if [ $val = "y" ]; then
+        echo -e "chsh -s ${zsh_shell}"
         chsh -s ${zsh_shell}
         echo -e "You have to logout and login again to finish zsh setup"
     fi

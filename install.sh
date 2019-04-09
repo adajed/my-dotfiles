@@ -95,11 +95,14 @@ tmuxplugins() {
 
 check_if_command_exists() {
     _command=$1
-    hash ${_command} 2>/dev/null || { echo >&2 "${_command} is required, but it's not installed. Please install it first."; exit 1; }
+    if [ $(hash ${_command} 2>/dev/null; echo $?) -eq 1 ]; then
+        echo -e "${_command} is required, but it's not installed. Please install it first."
+        exit 1
+    fi
 }
 
 # check requirements
-REQUIRED_COMMANDS=(git vim curl)
+REQUIRED_COMMANDS=(git vim curl tmux)
 for _command in ${REQUIRED_COMMANDS[*]}; do
     check_if_command_exists ${_command}
 done
