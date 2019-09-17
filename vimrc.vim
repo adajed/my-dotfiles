@@ -63,24 +63,17 @@ if has('nvim')
         \ }
     let g:deoplete#enable_at_startup = 1
 
+    Plug 'Shougo/neosnippet.vim'
+    Plug 'Shougo/neosnippet-snippets'
+
     Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 endif
 
 """" NERDTree
-" NERDTree, file system explorer
-Plug 'scrooloose/nerdtree'
-" support git in NERDTree
-Plug 'xuyuanp/nerdtree-git-plugin'
 
 """" git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-
-"""" Auto omnicompletion
-" Plug 'BrandonRoehl/auto-omni'
-
-"""" supertab
-" Plug 'ervandew/supertab'
 
 """" vim-airline
 Plug 'vim-airline/vim-airline'
@@ -113,6 +106,37 @@ if has('nvim')
     nnoremap <C-p> :<C-u>Denite file/rec<CR>
     nnoremap <leader>bb :<C-u>Denite buffer<CR>
 
+    call denite#custom#var('file/rec', 'command',
+      \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+
+    call denite#custom#var('grep', 'command', ['rg'])
+    call denite#custom#var('grep', 'default_opts',
+          \ ['--hidden', '--vimgrep', '--smart-case'])
+    call denite#custom#var('grep', 'recursive_opts', [])
+    call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
+    call denite#custom#var('grep', 'separator', ['--'])
+    call denite#custom#var('grep', 'final_opts', [])
+
+    autocmd FileType denite call s:denite_my_settings()
+    function! s:denite_my_settings() abort
+        nnoremap <silent><buffer><expr> <CR>
+        \ denite#do_map('do_action')
+        nnoremap <silent><buffer><expr> v
+        \ denite#do_map('do_action', 'vsplit')
+        nnoremap <silent><buffer><expr> s
+        \ denite#do_map('do_action', 'ssplit')
+        nnoremap <silent><buffer><expr> p
+        \ denite#do_map('do_action', 'preview')
+        nnoremap <silent><buffer><expr> q
+        \ denite#do_map('quit')
+        nnoremap <silent><buffer><expr> i
+        \ denite#do_map('open_filter_buffer')
+        nnoremap <silent><buffer><expr> <Space>
+        \ denite#do_map('toggle_select').'j'
+    endfunction
+
+    nnoremap <C-p>  :<C-u>Denite file/rec -start-filter<CR>
+    nnoremap <leader>/ :<C-u>Denite grep:.<CR>
 endif
 " }}}
 
@@ -134,52 +158,6 @@ let g:airline_mode_map = { '__' : '-', 'n'  : 'N',
             \ 's': 'S', 'S': 'S', '': 'S', }
 
 let g:airline_theme='cool'
-" }}}
-
-" => NERDTree {{{
-""""""""""""""""""""""""""""""""""""""""
-"               NERDTree               "
-""""""""""""""""""""""""""""""""""""""""
-" highlights files with given extension
-function! NERDTreeHighlightFile(extension, fg)
-    exec 'augroup NERDTreeHighlight_' . a:extension
-    exec 'autocmd!'
-    exec 'autocmd FileType nerdtree highlight ' . a:extension .
-                \ ' ctermbg=none' .' ctermfg=' . a:fg .
-                \ ' guibg=none guifg=none'
-    exec 'autocmd FileType nerdtree syn match ' . a:extension .
-                \ ' #^\s\+.*' . a:extension . '$#'
-    exec 'augroup END'
-endfunction
-
-function! NERDTreeStartUp()
-    call NERDTreeHighlightFile('py', '32')
-    " call NERDTreeHighlightFile('c', '11', 'none', 'none', 'none')
-    call NERDTreeHighlightFile('h', '50')
-    call NERDTreeHighlightFile('cc', '50')
-    call NERDTreeHighlightFile('cpp', '50')
-    call NERDTreeHighlightFile('sh', '34')
-
-    call NERDTreeHighlightFile('js', '66')
-    call NERDTreeHighlightFile('ts', '172')
-    call NERDTreeHighlightFile('html', '44')
-    call NERDTreeHighlightFile('css', '35')
-
-    if argc() == 0 && !exists("s:std_in")
-        NERDTree
-    endif
-endfunction
-
-augroup NERDTreeGroup
-    autocmd!
-
-    autocmd StdinReadPre * let s:std_in=1
-    autocmd VimEnter * call NERDTreeStartUp()
-augroup END
-
-let NERDTreeIgnore=['\.hi$', '\.pyc$', '\.o$']
-
-nnoremap <leader>n :NERDTreeToggle<Cr>
 " }}}
 
 " => Smooth Scroll {{{
@@ -208,6 +186,20 @@ nnoremap <leader>du :diffupdate<CR>
 
 " }}}
 
+" => neosnippet {{{
+
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+
+if has('conceal')
+    set conceallevel=2 concealcursor=niv
+endif
+
+" imap <expr><TAB>
+"         \ neosnippet#expandable_or_jumpable() ?
+"         \    "\<Plug>(neosnippet_expand_or_jump)" :
+"         \        pumvisible() ? "\<C-n>" : "\<TAB>"
+" }}}
+
 " }}}
 
 " => Language Server Protocol {{{
@@ -217,7 +209,7 @@ set completeopt=longest,menuone
 let g:LanguageClient_serverCommands = {
     \ 'python' : ['/usr/local/bin/pyls'],
     \ 'sh' : ['bash-language-server', 'start'],
-    \ 'cpp' : ['/usr/bin/clangd-7'],
+    \ 'cpp' : ['/usr/bin/clangd-8'],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
