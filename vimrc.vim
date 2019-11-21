@@ -173,16 +173,16 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 " }}}
 
 " => vim-fugitive {{{
-nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gs :10Gstatus<CR>
 nnoremap <leader>gd :Gvdiff<CR>
 
-nnoremap <leader>dr :diffget<space>//3<CR>:diffupdate<CR>
-nnoremap <leader>dl :diffget<space>//2<CR>:diffupdate<CR>
+nnoremap <leader>gr :diffget<space>//3<CR>:diffupdate<CR>
+nnoremap <leader>gl :diffget<space>//2<CR>:diffupdate<CR>
 
 " diffs
-nnoremap <leader>dg :diffget<CR>
-nnoremap <leader>dp :diffput<CR>
-nnoremap <leader>du :diffupdate<CR>
+nnoremap <leader>gg :diffget<CR>
+nnoremap <leader>gp :diffput<CR>
+nnoremap <leader>gu :diffupdate<CR>
 
 " }}}
 
