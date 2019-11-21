@@ -98,3 +98,9 @@ export LD_LIBRARY_PATH=/usr/local/cuda-${CUDA_VERSION}/lib64${LD_LIBRARY_PATH:+:
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+function tmuxstart
+{
+    __session_name=${1:-session}
+    tmux attach -t ${__session_name} || tmux new-session -s ${__session_name}
+}
