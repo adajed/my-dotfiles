@@ -37,6 +37,7 @@ do
             echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
             echo -e "--noupdate - don't update vim/nvim plugins"
             echo -e "--zsh      - install zsh"
+            echo -e "--ranger   - install ranger"
             exit 0
         ;;
         --nvim)
@@ -50,6 +51,10 @@ do
         ;;
         --zsh)
             USE_ZSH=1
+            shift
+        ;;
+        --ranger)
+            USE_RANGER=1
             shift
         ;;
         *)
@@ -143,6 +148,10 @@ if [ -d "$FOLDER/.git" ]; then
         echo "Installing vim plugins..."
         $VIM +PlugClean! +PlugUpdate +qall
         tmuxplugins $UPDATE_PLUGINS
+    fi
+
+    if [[ $USE_RANGER -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_ranger.sh
     fi
 
     if [[ $USE_ZSH -eq 1 ]]; then

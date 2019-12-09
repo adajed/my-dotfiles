@@ -104,3 +104,9 @@ function tmuxstart
     __session_name=${1:-session}
     tmux attach -t ${__session_name} || tmux new-session -s ${__session_name}
 }
+
+function tmuxkill()
+{
+    __session_name=${1}
+    tmux kill-sess -t ${__session_name}
+}

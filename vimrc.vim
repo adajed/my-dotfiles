@@ -96,7 +96,7 @@ call plug#end()
 " }}}
 
 " => Plugins setup {{{
-
+try
 " => denite {{{
 if has('nvim')
     call denite#custom#option('default', {
@@ -199,6 +199,8 @@ endif
 "         \    "\<Plug>(neosnippet_expand_or_jump)" :
 "         \        pumvisible() ? "\<C-n>" : "\<TAB>"
 " }}}
+catch
+endtry
 
 " }}}
 
@@ -302,9 +304,8 @@ if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
 
-let g:solarized_termcolors=256
 set background=dark
-colorscheme gruvbox
+silent! colorscheme gruvbox
 
 " Set extra options when running in GUI mode
 if has("gui_running")

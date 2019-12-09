@@ -12,4 +12,4 @@ RUN useradd -ou 0 -g 0 -m sampleuser
 
 USER sampleuser
 
-CMD ["/bin/bash"]
+CMD ["/bin/bash", "./install.sh", "--nvim", "--zsh", "--ranger"]
