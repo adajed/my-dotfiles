@@ -56,20 +56,18 @@ if has('nvim')
     Plug 'Shougo/denite.nvim'
     " autocompletion
     Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    let g:deoplete#enable_at_startup = 1
 
     Plug 'autozimu/LanguageClient-neovim', {
         \ 'branch' : 'next',
         \ 'do' : 'bash install.sh',
         \ }
-    let g:deoplete#enable_at_startup = 1
 
     Plug 'Shougo/neosnippet.vim'
     Plug 'Shougo/neosnippet-snippets'
 
     Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
 endif
-
-"""" NERDTree
 
 """" git
 Plug 'tpope/vim-fugitive'
@@ -84,12 +82,14 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-commentary'
 
-Plug 'altercation/vim-colors-solarized'
-
 " smooth scroll
 Plug 'terryma/vim-smooth-scroll'
 
+" colorscheme
 Plug 'morhetz/gruvbox'
+
+" tmux
+Plug 'christoomey/vim-tmux-navigator'
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -138,11 +138,6 @@ if has('nvim')
     nnoremap <C-p>  :<C-u>Denite file/rec -start-filter<CR>
     nnoremap <leader>/ :<C-u>Denite grep:.<CR>
 endif
-" }}}
-
-" => Python {{{
-let g:deoplete#sources#jedi#server_timeout = 30
-let g:deoplete#sources#jedi#python_path = "/usr/bin/python3.5"
 " }}}
 
 " => vim-airline {{{
@@ -212,6 +207,7 @@ let g:LanguageClient_serverCommands = {
     \ 'python' : ['/usr/local/bin/pyls'],
     \ 'sh' : ['bash-language-server', 'start'],
     \ 'cpp' : ['/usr/bin/clangd-8'],
+    \ 'c' : ['/usr/bin/clangd-8'],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
@@ -353,24 +349,12 @@ set wrap "Wrap lines
 " }}}
 
 " => Visual mode related {{{
-function! CmdLine(str) abort
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
-
-function! VisualSelection(direction, extra_filter) range abort
+function! VisualSelection() range abort
     let l:saved_reg = @"
     execute "normal! vgvy"
 
     let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ack '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
+    " let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     let @/ = l:pattern
     let @" = l:saved_reg
@@ -378,8 +362,8 @@ endfunction
 
 " Visual mode pressing * or # searches for the current selection
 " Super useful! From an idea by Michael Naumann
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+vnoremap <silent> * :<C-u>call VisualSelection()<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection()<CR>?<C-R>=@/<CR><CR>
 " }}}
 
 " => Moving around, tabs, windows and buffers {{{
@@ -389,11 +373,6 @@ inoremap kj <Esc>
 if has('nvim')
     tnoremap kj <C-\><C-n>
 endif
-"inoremap <Esc> <nop>
-
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-nnoremap <space> /
-nnoremap <c-space> ?
 
 " Disable highlight when <leader><cr> is pressed
 noremap <silent> <leader><cr> :noh<cr>
@@ -428,7 +407,8 @@ autocmd InsertLeave * if pumvisible() == 0 | pclose | endif
 
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
-nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+nnoremap <leader>te :tabedit <c-r>=expand("%:p:h")<cr><cr>
+nnoremap <leader>e :e <c-r>=expand("%:p:h")<cr><cr>
 
 " Specify the behavior when switching between buffers
 try
@@ -465,7 +445,7 @@ endfun
 if has("autocmd")
     augroup CleanExtraSpacesCmd
         autocmd!
-        autocmd BufWritePre *.txt,*.js,*.py,*.wiki,*.sh,*.coffee :call CleanExtraSpaces()
+        autocmd BufWritePre *.txt,*.py,*.sh,*.c,*.cc,*.cpp,*.h,*.hpp :call CleanExtraSpaces()
     augroup END
 endif
 " }}}

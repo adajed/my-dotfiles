@@ -19,21 +19,12 @@ safe_rm() {
     fi
 }
 
-# check if file directory exists and if not create it
-create_dir() {
-    _path=$1
-    if [ ! -d "${_path}" ]; then
-        mkdir ${_path}
-    fi
-}
-
-
 while [[ $# -gt 0 ]]
 do
     key="$1"
     case $key in
         -h|--help)
-            echo "Usage: $0 [--nvim] [--noupdate]"
+            echo "Usage: $0 [--nvim] [--noupdate] [--zsh] [--ranger]"
             echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
             echo -e "--noupdate - don't update vim/nvim plugins"
             echo -e "--zsh      - install zsh"
@@ -82,7 +73,7 @@ tmuxplugins() {
     _update=$1
     echo "Installing tmux plugins..."
 
-    create_dir ${HOME}/.tmux/plugins
+    mkdir -p ${HOME}/.tmux/plugins
     if [ ! -d "${HOME}/.tmux/plugins/tpm" ]; then
         git clone https://github.com/tmux-plugins/tpm ${HOME}/.tmux/plugins/tpm
     fi
@@ -107,7 +98,7 @@ check_if_command_exists() {
 }
 
 # check requirements
-REQUIRED_COMMANDS=(git vim curl tmux)
+REQUIRED_COMMANDS=(git vim curl tmux ag rg)
 for _command in ${REQUIRED_COMMANDS[*]}; do
     check_if_command_exists ${_command}
 done
