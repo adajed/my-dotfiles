@@ -80,6 +80,8 @@ source $ZSH/oh-my-zsh.sh
 #   export EDITOR='mvim'
 # fi
 
+unsetopt correct_all
+
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
 

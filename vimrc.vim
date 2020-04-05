@@ -44,6 +44,9 @@ set relativenumber
 nnoremap ; :
 nnoremap : ;
 
+vnoremap ; :
+vnoremap : ;
+
 " foldmethod (mainly for this vimrc)
 set foldmethod=marker
 
@@ -67,6 +70,8 @@ if has('nvim')
     Plug 'Shougo/neosnippet-snippets'
 
     Plug 'sakhnik/nvim-gdb', { 'do': ':!./install.sh \| UpdateRemotePlugins' }
+
+    Plug 'neovimhaskell/haskell-vim'
 endif
 
 """" git
@@ -97,25 +102,72 @@ call plug#end()
 
 " => Plugins setup {{{
 try
+" => deoplete {{{
+
+let g:deoplete#enable_at_startup = 1
+
+call deoplete#custom#option({
+            \ 'auto_complete_delay': 100,
+            \ })
+
+" }}}
+
 " => denite {{{
 if has('nvim')
     call denite#custom#option('default', {
         \ 'prompt': '❯'
         \ })
 
-    nnoremap <C-p> :<C-u>Denite file/rec<CR>
-    nnoremap <leader>bb :<C-u>Denite buffer<CR>
-
+    " file/rec
     call denite#custom#var('file/rec', 'command',
       \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 
+    " file/rec/git
+    call denite#custom#alias('source', 'file/rec/git', 'file/rec')
+    call denite#custom#var('file/rec/git', 'command',
+      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+
+    " grep
     call denite#custom#var('grep', 'command', ['rg'])
     call denite#custom#var('grep', 'default_opts',
-          \ ['--hidden', '--vimgrep', '--smart-case'])
+          \ ['--vimgrep', '--smart-case'])
     call denite#custom#var('grep', 'recursive_opts', [])
     call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
     call denite#custom#var('grep', 'separator', ['--'])
     call denite#custom#var('grep', 'final_opts', [])
+
+    autocmd FileType denite call s:denite_my_settings()
+    function! s:denite_my_settings() abort
+      " default action is to open file in current buffer
+      nnoremap <silent><buffer><expr> <CR>
+      \ denite#do_map('do_action')
+      " open file in preview
+      nnoremap <silent><buffer><expr> p
+      \ denite#do_map('do_action', 'preview')
+      " open file in vsplit
+      nnoremap <silent><buffer><expr> v
+      \ denite#do_map('do_action', 'vsplit')
+      " open file in split
+      nnoremap <silent><buffer><expr> s
+      \ denite#do_map('do_action', 'split')
+      " quit denite buffer
+      nnoremap <silent><buffer><expr> q
+      \ denite#do_map('quit')
+      " fuzzy search
+      nnoremap <silent><buffer><expr> i
+      \ denite#do_map('open_filter_buffer')
+      " toggle file as selected
+      nnoremap <silent><buffer><expr> <Space>
+      \ denite#do_map('toggle_select').'j'
+    endfunction
+
+    nnoremap <C-p> :<C-u>Denite file/rec -start-filter<CR>
+    nnoremap <C-g> :<C-u>Denite file/rec/git -start-filter<CR>
+    nnoremap <leader>bb :<C-u>Denite buffer -start-filter<CR>
+    nnoremap <leader>/ :<C-u>Denite line -start-filter<CR>
+    nnoremap <leader>// :<C-u>Denite grep:.::! -start-filter<CR>
+    nnoremap <C-p> :<C-u>Denite file/rec<CR>
+    nnoremap <leader>bb :<C-u>Denite buffer<CR>
 
     autocmd FileType denite call s:denite_my_settings()
     function! s:denite_my_settings() abort
@@ -124,7 +176,7 @@ if has('nvim')
         nnoremap <silent><buffer><expr> v
         \ denite#do_map('do_action', 'vsplit')
         nnoremap <silent><buffer><expr> s
-        \ denite#do_map('do_action', 'ssplit')
+        \ denite#do_map('do_action', 'split')
         nnoremap <silent><buffer><expr> p
         \ denite#do_map('do_action', 'preview')
         nnoremap <silent><buffer><expr> q
@@ -134,9 +186,24 @@ if has('nvim')
         nnoremap <silent><buffer><expr> <Space>
         \ denite#do_map('toggle_select').'j'
     endfunction
+endif
+" }}}
 
-    nnoremap <C-p>  :<C-u>Denite file/rec -start-filter<CR>
-    nnoremap <leader>/ :<C-u>Denite grep:.<CR>
+" => neosnippet {{{
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+            \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
 endif
 " }}}
 
@@ -181,6 +248,18 @@ nnoremap <leader>gu :diffupdate<CR>
 
 " }}}
 
+" => nvimgdb {{{
+" disable default mappings
+let g:nvimgdb_disable_start_keymaps = 1
+
+nnoremap <leader>dd :GdbStart gdb -q
+nnoremap <leader>db :GdbBreakpointToggle<cr>
+nnoremap <leader>dn :GdbNext<cr>
+nnoremap <leader>ds :GdbStep<cr>
+nnoremap <leader>dc :GdbContinue<cr>
+
+" }}}
+
 " => neosnippet {{{
 
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -194,6 +273,19 @@ endif
 "         \    "\<Plug>(neosnippet_expand_or_jump)" :
 "         \        pumvisible() ? "\<C-n>" : "\<TAB>"
 " }}}
+
+" => haskell-vim {{{
+
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+" }}}
+
 catch
 endtry
 
@@ -201,20 +293,26 @@ endtry
 
 " => Language Server Protocol {{{
 
-set completeopt=longest,menuone
+" set completeopt=longest,menuone
+
+let g:LanguageClient_waitOutputTimeout=60
+
+let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 
 let g:LanguageClient_serverCommands = {
-    \ 'python' : ['/usr/local/bin/pyls'],
-    \ 'sh' : ['bash-language-server', 'start'],
-    \ 'cpp' : ['/usr/bin/clangd-8'],
-    \ 'c' : ['/usr/bin/clangd-8'],
+    \ 'python'  : ['/usr/local/bin/pyls'],
+    \ 'sh'      : ['bash-language-server', 'start'],
+    \ 'cpp'     : ['/usr/bin/clangd-8'],
+    \ 'c'       : ['/usr/bin/clangd-8'],
+    \ 'haskell' : ['ghcide', '--lsp'],
     \ }
 
 nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 " Or map each action separately
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> rr :call LanguageClient#textDocument_rename()<CR>
+
+" let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
 
 " }}}
 
