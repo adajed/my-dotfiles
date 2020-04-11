@@ -161,13 +161,12 @@ if has('nvim')
       \ denite#do_map('toggle_select').'j'
     endfunction
 
-    nnoremap <C-p> :<C-u>Denite file/rec -start-filter<CR>
-    nnoremap <C-g> :<C-u>Denite file/rec/git -start-filter<CR>
-    nnoremap <leader>bb :<C-u>Denite buffer -start-filter<CR>
-    nnoremap <leader>/ :<C-u>Denite line -start-filter<CR>
-    nnoremap <leader>// :<C-u>Denite grep:.::! -start-filter<CR>
-    nnoremap <C-p> :<C-u>Denite file/rec<CR>
-    nnoremap <leader>bb :<C-u>Denite buffer<CR>
+    nnoremap <C-p> :<C-u>Denite -start-filter file/rec<CR>
+    nnoremap <C-g> :<C-u>Denite -start-filter file/rec/git<CR>
+    nnoremap <leader>bb :<C-u>Denite -start-filter buffer<CR>
+    nnoremap <leader>/ :<C-u>Denite -start-filter line<CR>
+    nnoremap <leader>// :<C-u>Denite -start-filter grep:.::!<CR>
+    nnoremap <leader>bb :<C-u>Denite -start-filter buffer<CR>
 
     autocmd FileType denite call s:denite_my_settings()
     function! s:denite_my_settings() abort
