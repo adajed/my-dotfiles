@@ -96,6 +96,9 @@ Plug 'morhetz/gruvbox'
 " tmux
 Plug 'christoomey/vim-tmux-navigator'
 
+" latex
+Plug 'lervag/vimtex'
+
 " All of your Plugins must be added before the following line
 call plug#end()
 " }}}
@@ -109,6 +112,10 @@ let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option({
             \ 'auto_complete_delay': 100,
             \ })
+
+call deoplete#custom#var('omni', 'input_patters', {
+            \ 'tex': g:vimtex#re#deoplete
+            \})
 
 " }}}
 
@@ -283,6 +290,14 @@ let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
 let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+
+" }}}
+
+" => vimtex {{{
+
+let g:vimtex_compiler_progname = 'nvr'
+
+let g:tex_conceal = ''
 
 " }}}
 
