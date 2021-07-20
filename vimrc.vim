@@ -31,6 +31,7 @@ set autoread
 " like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
+let maplocalleader = "."
 
 " Fast saving
 nnoremap <leader>w :w!<cr>
@@ -50,13 +51,19 @@ vnoremap : ;
 " foldmethod (mainly for this vimrc)
 set foldmethod=marker
 
+" decrement number
+nnoremap <leader>- <C-X>
+
+" increment number
+nnoremap <leader>= <C-A>
+
 " }}}
 
 " => vim-plug {{{
 call plug#begin('~/.vim/plugged')
 
 if has('nvim')
-    Plug 'Shougo/denite.nvim'
+    " Plug 'Shougo/denite.nvim'
     " autocompletion
     Plug 'shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     let g:deoplete#enable_at_startup = 1
@@ -73,6 +80,10 @@ if has('nvim')
 
     Plug 'neovimhaskell/haskell-vim'
 endif
+
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 """" git
 Plug 'tpope/vim-fugitive'
@@ -112,80 +123,15 @@ call deoplete#custom#option({
 
 " }}}
 
-" => denite {{{
-if has('nvim')
-    call denite#custom#option('default', {
-        \ 'prompt': '❯'
-        \ })
+" => fzf {{{
 
-    " file/rec
-    call denite#custom#var('file/rec', 'command',
-      \ ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
+nnoremap <C-p> :Files<CR>
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>l :Lines<CR>
 
-    " file/rec/git
-    call denite#custom#alias('source', 'file/rec/git', 'file/rec')
-    call denite#custom#var('file/rec/git', 'command',
-      \ ['git', 'ls-files', '-co', '--exclude-standard'])
+nnoremap <leader>s :Ag <CR>
+nnoremap <leader>c yaw:Ag <C-R>"<CR>
 
-    " grep
-    call denite#custom#var('grep', 'command', ['rg'])
-    call denite#custom#var('grep', 'default_opts',
-          \ ['--vimgrep', '--smart-case'])
-    call denite#custom#var('grep', 'recursive_opts', [])
-    call denite#custom#var('grep', 'pattern_opt', ['--regexp'])
-    call denite#custom#var('grep', 'separator', ['--'])
-    call denite#custom#var('grep', 'final_opts', [])
-
-    autocmd FileType denite call s:denite_my_settings()
-    function! s:denite_my_settings() abort
-      " default action is to open file in current buffer
-      nnoremap <silent><buffer><expr> <CR>
-      \ denite#do_map('do_action')
-      " open file in preview
-      nnoremap <silent><buffer><expr> p
-      \ denite#do_map('do_action', 'preview')
-      " open file in vsplit
-      nnoremap <silent><buffer><expr> v
-      \ denite#do_map('do_action', 'vsplit')
-      " open file in split
-      nnoremap <silent><buffer><expr> s
-      \ denite#do_map('do_action', 'split')
-      " quit denite buffer
-      nnoremap <silent><buffer><expr> q
-      \ denite#do_map('quit')
-      " fuzzy search
-      nnoremap <silent><buffer><expr> i
-      \ denite#do_map('open_filter_buffer')
-      " toggle file as selected
-      nnoremap <silent><buffer><expr> <Space>
-      \ denite#do_map('toggle_select').'j'
-    endfunction
-
-    nnoremap <C-p> :<C-u>Denite -start-filter file/rec<CR>
-    nnoremap <C-g> :<C-u>Denite -start-filter file/rec/git<CR>
-    nnoremap <leader>bb :<C-u>Denite -start-filter buffer<CR>
-    nnoremap <leader>/ :<C-u>Denite -start-filter line<CR>
-    nnoremap <leader>// :<C-u>Denite -start-filter grep:.::!<CR>
-    nnoremap <leader>bb :<C-u>Denite -start-filter buffer<CR>
-
-    autocmd FileType denite call s:denite_my_settings()
-    function! s:denite_my_settings() abort
-        nnoremap <silent><buffer><expr> <CR>
-        \ denite#do_map('do_action')
-        nnoremap <silent><buffer><expr> v
-        \ denite#do_map('do_action', 'vsplit')
-        nnoremap <silent><buffer><expr> s
-        \ denite#do_map('do_action', 'split')
-        nnoremap <silent><buffer><expr> p
-        \ denite#do_map('do_action', 'preview')
-        nnoremap <silent><buffer><expr> q
-        \ denite#do_map('quit')
-        nnoremap <silent><buffer><expr> i
-        \ denite#do_map('open_filter_buffer')
-        nnoremap <silent><buffer><expr> <Space>
-        \ denite#do_map('toggle_select').'j'
-    endfunction
-endif
 " }}}
 
 " => neosnippet {{{
@@ -204,6 +150,9 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
+
+let g:neosnippet#enable_complete_done = 1
+
 " }}}
 
 " => vim-airline {{{
@@ -251,26 +200,12 @@ nnoremap <leader>gu :diffupdate<CR>
 " disable default mappings
 let g:nvimgdb_disable_start_keymaps = 1
 
-nnoremap <leader>dd :GdbStart gdb -q
+nnoremap <leader>dd :GdbStart gdb -q --args
 nnoremap <leader>db :GdbBreakpointToggle<cr>
 nnoremap <leader>dn :GdbNext<cr>
 nnoremap <leader>ds :GdbStep<cr>
 nnoremap <leader>dc :GdbContinue<cr>
 
-" }}}
-
-" => neosnippet {{{
-
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-
-if has('conceal')
-    set conceallevel=2 concealcursor=niv
-endif
-
-" imap <expr><TAB>
-"         \ neosnippet#expandable_or_jumpable() ?
-"         \    "\<Plug>(neosnippet_expand_or_jump)" :
-"         \        pumvisible() ? "\<C-n>" : "\<TAB>"
 " }}}
 
 " => haskell-vim {{{
@@ -286,6 +221,8 @@ let g:haskell_backpack = 1                " to enable highlighting of backpack k
 " }}}
 
 catch
+echo "Plugin setup error: " . v:exception
+
 endtry
 
 " }}}
@@ -301,8 +238,8 @@ let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 let g:LanguageClient_serverCommands = {
     \ 'python'  : ['/usr/local/bin/pyls'],
     \ 'sh'      : ['bash-language-server', 'start'],
-    \ 'cpp'     : ['/usr/bin/clangd-8'],
-    \ 'c'       : ['/usr/bin/clangd-8'],
+    \ 'cpp'     : ['/usr/bin/clangd'],
+    \ 'c'       : ['/usr/bin/clangd'],
     \ 'haskell' : ['ghcide', '--lsp'],
     \ }
 
@@ -311,7 +248,13 @@ nnoremap <F5> :call LanguageClient_contextMenu()<CR>
 nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
 
-" let g:LanguageClient_rootMarkers = ['*.cabal', 'stack.yaml']
+let g:LanguageClient_rootMarkers = {
+    \ 'cpp'     : ['compile_commands.json', 'build'],
+    \ 'c'       : ['compile_commands.json', 'build']
+    \ }
+
+let g:LanguageClient_autoStart = 0
+let g:LanguageClient_hasSnippetSupport = 1
 
 " }}}
 
@@ -481,7 +424,7 @@ noremap <C-h> <C-W>h
 noremap <C-l> <C-W>l
 
 " integrate deleting buffers with NERDTree
-nnoremap <leader>bd :bp<CR>:bd #<CR>
+" nnoremap <leader>bd :bp<CR>:bd #<CR>
 
 " Useful mappings for managing tabs
 nnoremap <leader>tn :tabnew<cr>

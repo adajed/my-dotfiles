@@ -91,11 +91,11 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # For a full list of active aliases, run `alias`.
 #
 
-CUDA_VERSION=10.1
-CUDNN_VERSION=7.6
+CUDA_VERSION=11.3
+CUDNN_VERSION=11.2
 # CUDA settings
 export PATH=/usr/local/cuda-${CUDA_VERSION}/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cuda-${CUDA_VERSION}/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+export LD_LIBRARY_PATH=/usr/local/cudnn-${CUDNN_VERSION}/lib64:/usr/local/cuda-${CUDA_VERSION}/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -112,3 +112,10 @@ function tmuxkill()
     __session_name=${1}
     tmux kill-sess -t ${__session_name}
 }
+
+#setopt noincappendhistory
+setopt nosharehistory
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+. /usr/share/autojump/autojump.sh

@@ -4,7 +4,7 @@
 
 [core]
     editor = vim
-    pager = less -r
+    pager = delta
 
 [color]
     branch = auto
@@ -29,6 +29,13 @@
     untracted = cyan
 
 [alias]
+    a = add
+    m = commit -m
+    f = fetch
+    fa = fetch --all
+
+    d = diff
+
     s = status
     sb = status -s -b
 
@@ -45,6 +52,14 @@
 
 [push]
     default = matching
+
+[delta]
+    plus-color = "#012800"
+    minus-color = "#340001"
+    syntax-theme = Monokai Extended
+
+[interactive]
+    diffFilter = delta --color-only
 
 [merge]
     defaultToUpstream = true
