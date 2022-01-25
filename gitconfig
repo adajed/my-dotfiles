@@ -54,9 +54,11 @@
     default = matching
 
 [delta]
-    plus-color = "#012800"
-    minus-color = "#340001"
+    plus-style = syntax "#013A00"
+    minus-style = normal "#400001"
     syntax-theme = Monokai Extended
+    line-number = true
+    light = true
 
 [interactive]
     diffFilter = delta --color-only
