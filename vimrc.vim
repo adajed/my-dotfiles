@@ -130,7 +130,7 @@ nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>l :Lines<CR>
 
 nnoremap <leader>s :Ag <CR>
-nnoremap <leader>c yaw:Ag <C-R>"<CR>
+nnoremap <leader>c yiw:Ag <C-R>"<CR>
 
 " }}}
 
