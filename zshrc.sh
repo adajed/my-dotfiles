@@ -113,7 +113,7 @@ function tmuxkill()
     tmux kill-sess -t ${__session_name}
 }
 
-#setopt noincappendhistory
+setopt noincappendhistory
 setopt nosharehistory
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
