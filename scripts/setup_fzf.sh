@@ -1,0 +1,5 @@
+#!/bin/bash
+
+git clone https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --key-bindings --completion --update-rc
+

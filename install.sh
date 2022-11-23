@@ -10,6 +10,9 @@ UPDATE_PLUGINS=1
 VIM="vim"
 # set to 1 to install zsh
 USE_ZSH=0
+#
+USE_RANGER=0
+USE_FZF=0
 
 # check if file exists before removing it
 safe_rm() {
@@ -29,6 +32,7 @@ do
             echo -e "--noupdate - don't update vim/nvim plugins"
             echo -e "--zsh      - install zsh"
             echo -e "--ranger   - install ranger"
+            echo -e "--fzf      - install fzf"
             exit 0
         ;;
         --nvim)
@@ -46,6 +50,10 @@ do
         ;;
         --ranger)
             USE_RANGER=1
+            shift
+        ;;
+        --fzf)
+            USE_FZF=1
             shift
         ;;
         *)
@@ -141,6 +149,10 @@ if [ -d "$FOLDER/.git" ]; then
         tmuxplugins $UPDATE_PLUGINS
     fi
 
+    if [[ $USE_FZF -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_fzf.sh
+    fi
+
     if [[ $USE_RANGER -eq 1 ]]; then
         . ${FOLDER}/scripts/setup_ranger.sh
     fi
@@ -148,7 +160,6 @@ if [ -d "$FOLDER/.git" ]; then
     if [[ $USE_ZSH -eq 1 ]]; then
         . ${FOLDER}/scripts/setup_zsh.sh
     fi
-
 else
     echo "wrong directory :("
 fi
