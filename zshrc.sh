@@ -98,3 +98,5 @@ if [ -f ${HOME}/.bash_aliases ]; then
 fi
 
 [ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh
+
+[ -f /usr/share/autojump/autojump.sh ] && . /usr/share/autojump/autojump.sh

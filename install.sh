@@ -18,6 +18,9 @@ USE_RANGER=1
 # whether to install fzf
 USE_FZF=1
 
+# whether to install autojump
+USE_AUTOJUMP=1
+
 # "vim" for vim and "nvim" for neovim
 VIM="nvim"
 
@@ -34,7 +37,7 @@ do
     key="$1"
     case $key in
         -h|--help)
-            echo "Usage: $0 [--no-nvim] [--no-update] [--no-zsh] [--no-ranger] [--no-fzf]"
+            echo "Usage: $0 [--no-nvim] [--no-update] [--no-zsh] [--no-ranger] [--no-fzf] [--no-autojump]"
             echo -e "--no-nvim     - use vim instead of neovim"
             echo -e "--no-update   - don't update vim/nvim plugins"
             echo -e "--no-zsh      - don't install zsh"
@@ -62,6 +65,10 @@ do
         ;;
         --no-fzf)
             USE_FZF=0
+            shift
+        ;;
+        --no-autojump)
+            USE_AUTOJUMP=0
             shift
         ;;
         *)
@@ -167,6 +174,10 @@ if [ -d "$FOLDER/.git" ]; then
 
     if [[ $USE_ZSH -eq 1 ]]; then
         . ${FOLDER}/scripts/setup_zsh.sh
+    fi
+
+    if [[ $USE_AUTOJUMP -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_autojump.sh
     fi
 else
     echo "wrong directory :("
