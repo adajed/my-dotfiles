@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-  export ZSH="/home/adam/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -81,9 +81,11 @@ source $ZSH/oh-my-zsh.sh
 # fi
 
 unsetopt correct_all
+setopt noincappendhistory
+setopt nosharehistory
 
 # ssh
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+export SSH_KEY_PATH="${HOME}/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -91,31 +93,8 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 # For a full list of active aliases, run `alias`.
 #
 
-CUDA_VERSION=11.3
-CUDNN_VERSION=11.2
-# CUDA settings
-export PATH=/usr/local/cuda-${CUDA_VERSION}/bin${PATH:+:${PATH}}
-export LD_LIBRARY_PATH=/usr/local/cudnn-${CUDNN_VERSION}/lib64:/usr/local/cuda-${CUDA_VERSION}/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f ${HOME}/.bash_aliases ]; then
+    . ${HOME}/.bash_aliases
 fi
 
-function tmuxstart
-{
-    __session_name=${1:-session}
-    tmux attach -t ${__session_name} || tmux new-session -s ${__session_name}
-}
-
-function tmuxkill()
-{
-    __session_name=${1}
-    tmux kill-sess -t ${__session_name}
-}
-
-setopt noincappendhistory
-setopt nosharehistory
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-. /usr/share/autojump/autojump.sh
+[ -f ${HOME}/.fzf.zsh ] && source ${HOME}/.fzf.zsh

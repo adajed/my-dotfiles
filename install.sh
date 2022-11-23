@@ -2,17 +2,24 @@
 
 # directory of this repo
 FOLDER=$(pwd)
-# set to 1 use neovim instead of vim
-USE_NVIM=0
+
+# whether to use neovim instead of vim
+USE_NVIM=1
+
 # whether to update vim/neovim and tmux plugins
 UPDATE_PLUGINS=1
+
+# whether to use zsh instead of bash
+USE_ZSH=1
+
+# whether to install ranger
+USE_RANGER=1
+
+# whether to install fzf
+USE_FZF=1
+
 # "vim" for vim and "nvim" for neovim
-VIM="vim"
-# set to 1 to install zsh
-USE_ZSH=0
-#
-USE_RANGER=0
-USE_FZF=0
+VIM="nvim"
 
 # check if file exists before removing it
 safe_rm() {
@@ -27,33 +34,34 @@ do
     key="$1"
     case $key in
         -h|--help)
-            echo "Usage: $0 [--nvim] [--noupdate] [--zsh] [--ranger]"
-            echo -e "--nvim     - use neovim instead of vim (neovim must be already installed)"
-            echo -e "--noupdate - don't update vim/nvim plugins"
-            echo -e "--zsh      - install zsh"
-            echo -e "--ranger   - install ranger"
-            echo -e "--fzf      - install fzf"
+            echo "Usage: $0 [--no-nvim] [--no-update] [--no-zsh] [--no-ranger] [--no-fzf]"
+            echo -e "--no-nvim     - use vim instead of neovim"
+            echo -e "--no-update   - don't update vim/nvim plugins"
+            echo -e "--no-zsh      - don't install zsh"
+            echo -e "--no-ranger   - don't install ranger"
+            echo -e "--no-fzf      - don't install fzf"
+            echo -e "--no-autojump - don't install autojump"
             exit 0
         ;;
-        --nvim)
-            USE_NVIM=1
-            VIM="nvim"
+        --no-nvim)
+            USE_NVIM=0
+            VIM="vim"
             shift
         ;;
-        --noupdate)
+        --no-update)
             UPDATE_PLUGINS=0
             shift
         ;;
-        --zsh)
-            USE_ZSH=1
+        --no-zsh)
+            USE_ZSH=0
             shift
         ;;
-        --ranger)
-            USE_RANGER=1
+        --no-ranger)
+            USE_RANGER=0
             shift
         ;;
-        --fzf)
-            USE_FZF=1
+        --no-fzf)
+            USE_FZF=0
             shift
         ;;
         *)
