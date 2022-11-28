@@ -40,6 +40,10 @@
     s = status
     sb = status -s -b
 
+    st = stash
+    stp = stash pop
+    stl = stash list
+
     cb = checkout -b
     b = branch
     c = checkout
