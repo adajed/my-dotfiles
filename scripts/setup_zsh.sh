@@ -4,7 +4,7 @@ echo -e "Downloading zsh..."
 apt install zsh -y
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo -e "Downloading oh-my-zsh..."
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
 fi
 
 if [ -f "$HOME/.zshrc" ]; then

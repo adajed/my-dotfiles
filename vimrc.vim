@@ -7,14 +7,16 @@
 "
 " Sections:
 "    -> General
-"    -> Vundle
+"    -> vim-plug
 "    -> Plugins setup
+"    -> Language Server Protocol
 "    -> VIM user interface
 "    -> Colors and Fonts
 "    -> Files, backups and undo
 "    -> Text, tab and indent related
 "    -> Visual mode related
 "    -> Moving around, tabs and buffers
+"    -> Clipboard mappings
 "    -> Editing mappings
 "    -> Helper functions
 "
@@ -113,6 +115,7 @@ call plug#end()
 
 " => Plugins setup {{{
 try
+
 " => deoplete {{{
 
 let g:deoplete#enable_at_startup = 1
@@ -126,20 +129,20 @@ call deoplete#custom#option({
 " => fzf {{{
 
 nnoremap <C-p> :Files<CR>
-nnoremap <leader>b :Buffers<CR>
-nnoremap <leader>l :Lines<CR>
+nnoremap <leader>fb :Buffers<CR>
+nnoremap <leader>fl :Lines<CR>
 
-nnoremap <leader>s :Ag <CR>
-nnoremap <leader>c yiw:Ag <C-R>"<CR>
+nnoremap <leader>fs :Ag <CR>
+nnoremap <leader>fc yiw:Ag <C-R>"<CR>
 
 " }}}
 
 " => neosnippet {{{
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-y>     <Plug>(neosnippet_expand_or_jump)
+smap <C-y>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-y>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -236,24 +239,38 @@ let g:LanguageClient_waitOutputTimeout=60
 let g:LanguageClient_loggingFile = '/tmp/LanguageClient.log'
 
 let g:LanguageClient_serverCommands = {
-    \ 'python'  : ['/usr/local/bin/pyls'],
+    \ 'python'  : ['pyls'],
     \ 'sh'      : ['bash-language-server', 'start'],
-    \ 'cpp'     : ['/usr/bin/clangd'],
-    \ 'c'       : ['/usr/bin/clangd'],
+    \ 'cpp'     : ['clangd-12'],
+    \ 'c'       : ['clangd-12'],
     \ 'haskell' : ['ghcide', '--lsp'],
     \ }
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+
+function! s:SetLSPShortcuts()
+  nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
+  nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
+  nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
+  nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
+  nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
+  nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
+  nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
+  nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
+  nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
+endfunction()
+
+augroup LSP
+  autocmd!
+  autocmd FileType cpp,c,python,bash call s:SetLSPShortcuts()
+augroup END
 
 let g:LanguageClient_rootMarkers = {
     \ 'cpp'     : ['compile_commands.json', 'build'],
     \ 'c'       : ['compile_commands.json', 'build']
     \ }
 
-let g:LanguageClient_autoStart = 0
+let g:LanguageClient_autoStart = 1
 let g:LanguageClient_hasSnippetSupport = 1
 
 " }}}

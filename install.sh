@@ -21,6 +21,9 @@ USE_FZF=1
 # whether to install autojump
 USE_AUTOJUMP=1
 
+# whether to install language servers
+USE_LANGUAGE_SERVER=1
+
 # "vim" for vim and "nvim" for neovim
 VIM="nvim"
 
@@ -44,6 +47,7 @@ do
             echo -e "--no-ranger   - don't install ranger"
             echo -e "--no-fzf      - don't install fzf"
             echo -e "--no-autojump - don't install autojump"
+            echo -e "--no-lsp      - don't install language servers"
             exit 0
         ;;
         --no-nvim)
@@ -69,6 +73,10 @@ do
         ;;
         --no-autojump)
             USE_AUTOJUMP=0
+            shift
+        ;;
+        --no-lsp)
+            USE_LANGUAGE_SERVER=0
             shift
         ;;
         *)
@@ -120,11 +128,20 @@ check_if_command_exists() {
     fi
 }
 
-# check requirements
-REQUIRED_COMMANDS=(git vim curl tmux ag rg)
-for _command in ${REQUIRED_COMMANDS[*]}; do
-    check_if_command_exists ${_command}
-done
+install_if_does_not_exists() {
+    _command=$1
+    _package=$2
+    if [ $(hash ${_command} 2>/dev/null; echo $?) -eq 1]; then
+        apt install ${_package} -y
+    fi
+}
+
+install_if_does_not_exists git git
+install_if_does_not_exists vim vim
+install_if_does_not_exists curl curl
+install_if_does_not_exists tmux tmux
+install_if_does_not_exists ag silversearcher-ag
+install_if_does_not_exists rg ripgrep
 
 # if installing for neovim check whether it is installed
 if [[ $USE_NVIM -eq 1 ]]; then
@@ -179,6 +196,13 @@ if [ -d "$FOLDER/.git" ]; then
     if [[ $USE_AUTOJUMP -eq 1 ]]; then
         . ${FOLDER}/scripts/setup_autojump.sh
     fi
+
+    if [[ $USE_LANGUAGE_SERVER -eq 1 ]]; then
+        . ${FOLDER}/scripts/setup_lsp.sh
+    fi
+
+    install_if_does_not_exists clang-tidy clang-tidy-14
+    install_if_does_not_exists clang-format clang-format-14
 else
     echo "wrong directory :("
 fi
