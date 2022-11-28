@@ -33,6 +33,7 @@
     m = commit -m
     f = fetch
     fa = fetch --all
+    fp = fetch --all --prune
 
     d = diff
 
@@ -43,8 +44,14 @@
     b = branch
     c = checkout
     p = push
+    pf = push --force
     po = push origin
+    pof = push --force origin
     pu = pull --ff-only
+
+    r = rebase
+    rc = rebase --continue
+    ri = rebase interactive
 
     lo = log --oneline
     lg = log --oneline --graph
